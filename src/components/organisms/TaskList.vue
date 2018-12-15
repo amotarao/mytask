@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h2 class="display-1">{{ title }}</h2>
-    <v-layout mt-3 row wrap>
-      <v-flex xs12>
+    <v-flex tag="h2" class="display-1" ma-2>{{ title }}</v-flex>
+    <v-layout row wrap>
+      <v-flex xs12 ma-2>
         <task-card title="あいうえお" :start-time="new Date()" :duration="70" />
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12 ma-2>
         <task-card
           title="あいうえお"
           description="説明説明"
@@ -13,7 +13,7 @@
           :duration="70"
         />
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12 ma-2>
         <task-card
           title="あいうえお"
           description="説明説明\n複数行\n説明説明\n複数行\n説明説明\n複数行"
@@ -21,9 +21,13 @@
           :duration="70"
         />
       </v-flex>
-      <v-flex xs12> <task-card title="あいうえお" :duration="30" /> </v-flex>
-      <v-flex xs12> <task-card title="あいうえお" :duration="65" /> </v-flex>
-      <v-flex xs12>
+      <v-flex xs12 ma-2>
+        <task-card title="あいうえお" :duration="30" />
+      </v-flex>
+      <v-flex xs12 ma-2>
+        <task-card title="あいうえお" :duration="65" />
+      </v-flex>
+      <v-flex xs12 ma-2>
         <task-card title="あいうえお" :start-time="new Date()" />
       </v-flex>
     </v-layout>

@@ -21,11 +21,7 @@
 </template>
 
 <script>
-const getFormatedTime = time => {
-  const hour = time.getHours()
-  const min = `0${time.getMinutes()}`.slice(-2)
-  return `${hour}:${min}`
-}
+import { getFormatedTime } from '@/utils/datetime'
 
 export default {
   name: 'task-card',

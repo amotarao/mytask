@@ -7,7 +7,7 @@
     >
       <v-card-title>
         <div>
-          <span v-if="startTime" class="time">{{ timeText }}</span>
+          <span v-if="startTime !== null" class="time">{{ timeText }}</span>
           <span v-if="duration" class="grey--text">{{ durationText }}</span>
           <p class="headline">{{ title }}</p>
           <template v-for="(line, i) in separatedDescription">
@@ -34,29 +34,41 @@ export default {
       type: String,
       default: '',
     },
-    startTime: {
+    startDate: {
       default: null,
       validator(val) {
         return val instanceof Date
       },
     },
+    startTime: {
+      type: Number,
+      default: null,
+    },
     duration: {
       type: Number,
-      default: 0,
+      default: null,
     },
   },
   computed: {
     timeText() {
-      const time = this.startTime
-      const d = this.duration
+      const d = this.startDate
+      if (d === null) return ''
+
+      const time = new Date(d.getTime())
+      time.setHours(0)
+      time.setMinutes(this.startTime)
       const s = getFormatedTime(time)
-      if (!d) return s
-      time.setMinutes(time.getMinutes() + this.duration)
+      if (!this.duration) return s
+
+      time.setHours(0)
+      time.setMinutes(this.startTime + this.duration)
       const e = getFormatedTime(time)
       return `${s} - ${e}`
     },
     durationText() {
       const d = this.duration
+      if (d === null) return ''
+
       const hour = Math.floor(d / 60)
       const min = `0${d % 60}`.slice(-2)
       if (!hour) return `(${min}m)`

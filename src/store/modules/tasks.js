@@ -41,6 +41,9 @@ const store = {
       const index = state.tasks.findIndex(task => task.id === id)
       state.tasks = state.tasks.filter(task => task.id !== index)
     },
+    deleteAllTasks(state) {
+      state.tasks = []
+    },
   },
   actions: {
     addTask({ commit }, task) {
@@ -51,6 +54,9 @@ const store = {
     },
     removeTask({ commit }, id) {
       commit('deleteTask', id)
+    },
+    removeAllTasks({ commit }) {
+      commit('deleteAllTasks')
     },
   },
   getters: {

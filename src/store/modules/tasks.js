@@ -8,6 +8,8 @@ const generateID = () => {
     .slice(-8)
 }
 
+import { getFormatedDate } from '@/utils/datetime'
+
 const store = {
   namespaced: true,
   state: initialState,
@@ -59,25 +61,20 @@ const store = {
       return state.tasks
     },
     todayTasks: state => {
-      const now = new Date()
-      now.setHours(0)
-      now.setMinutes(0)
-      now.setSeconds(0)
+      const today = new Date()
+      const now = getFormatedDate(today)
 
       return state.tasks.filter(task => {
-        task.startDate >= now || !task.startDate
+        return getFormatedDate(task.startDate) === now
       })
     },
     featureTasks: state => {
-      const now = new Date()
-      now.setDate(now.getDate() + 1)
-      now.setHours(0)
-      now.setMinutes(0)
-      now.setSeconds(0)
+      const today = new Date()
+      const now = getFormatedDate(today)
 
-      return state.tasks.filter(
-        task => task.startDate >= now || !task.startDate
-      )
+      return state.tasks.filter(task => {
+        return getFormatedDate(task.startDate) > now || !task.startDate
+      })
     },
   },
 }

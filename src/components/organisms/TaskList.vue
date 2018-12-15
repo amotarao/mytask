@@ -2,33 +2,14 @@
   <div>
     <v-flex tag="h2" class="display-1" ma-2>{{ title }}</v-flex>
     <v-layout row wrap>
-      <v-flex xs12 ma-2>
-        <task-card title="あいうえお" :start-time="new Date()" :duration="70" />
-      </v-flex>
-      <v-flex xs12 ma-2>
+      <v-flex xs12 ma-2 v-for="task in tasks" :key="task.id">
         <task-card
-          title="あいうえお"
-          description="説明説明"
-          :start-time="new Date()"
-          :duration="70"
+          :title="task.title"
+          :description="tasks.description"
+          :start-date="task.startDate"
+          :start-time="task.startTime"
+          :duration="task.duration"
         />
-      </v-flex>
-      <v-flex xs12 ma-2>
-        <task-card
-          title="あいうえお"
-          description="説明説明\n複数行\n説明説明\n複数行\n説明説明\n複数行"
-          :start-time="new Date()"
-          :duration="70"
-        />
-      </v-flex>
-      <v-flex xs12 ma-2>
-        <task-card title="あいうえお" :duration="30" />
-      </v-flex>
-      <v-flex xs12 ma-2>
-        <task-card title="あいうえお" :duration="65" />
-      </v-flex>
-      <v-flex xs12 ma-2>
-        <task-card title="あいうえお" :start-time="new Date()" />
       </v-flex>
     </v-layout>
   </div>
@@ -45,6 +26,9 @@ export default {
   props: {
     title: {
       type: String,
+    },
+    tasks: {
+      type: Array,
     },
   },
 }

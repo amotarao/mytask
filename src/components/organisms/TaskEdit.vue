@@ -1,13 +1,13 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <span class="headline">{{ head }}</span>
-    </v-card-title>
-    <v-card-text>
-      <v-container grid-list-md>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-form @submit="$emit">
+  <v-form @submit="$emit('save', task)">
+    <v-card>
+      <v-card-title>
+        <span class="headline">{{ head }}</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container grid-list-md>
+          <v-layout wrap>
+            <v-flex xs12>
               <v-text-field v-model="tmp.title" label="Title" clearable />
               <v-textarea
                 v-model="tmp.description"
@@ -40,24 +40,18 @@
                   />
                 </v-flex>
               </v-layout>
-            </v-form>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn color="green darken-1" flat @click="setNow">Now</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn color="green darken-1" flat @click="$emit('close')">Cancel</v-btn>
-      <v-btn
-        type="submit"
-        color="green darken-1"
-        flat
-        @click="$emit('save', task)"
-        >Save</v-btn
-      >
-    </v-card-actions>
-  </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="green darken-1" flat @click="setNow">Now</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="green darken-1" flat @click="cansel">Cancel</v-btn>
+        <v-btn type="submit" color="green darken-1" flat>Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-form>
 </template>
 
 <script>
@@ -191,6 +185,9 @@ export default {
       const now = new Date()
       this.tmp.startDate = now
       this.tmp.startTime = now.getHours() * 60 + now.getMinutes()
+    },
+    cansel() {
+      this.$emit('close')
     },
   },
   mounted() {

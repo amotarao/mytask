@@ -4,21 +4,26 @@
     <v-spacer />
 
     <template v-if="!isSignedIn">
-      <v-btn @click="startSignIn" flat>Sign in</v-btn>
-      <v-btn @click="startSignIn" outline color="white">Sign up</v-btn>
+      <v-btn @click="signIn" flat>Sign in</v-btn>
+      <v-btn @click="signIn" outline color="white">Sign up</v-btn>
     </template>
     <template v-else>
-      <v-avatar size="36px">
-        <img :src="user.photoURL" alt="Avatar" />
-      </v-avatar>
+      <v-menu offset-y right>
+        <v-avatar slot="activator" size="36px">
+          <img :src="user.photoURL" alt="Avatar" />
+        </v-avatar>
+        <v-list>
+          <v-list-tile @click="signOut">
+            <v-list-tile-title>Sign out</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </template>
   </v-toolbar>
 </template>
 
 <script>
-import { signIn } from '@/plugins/firebase'
-
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'toolbar',
@@ -26,9 +31,7 @@ export default {
     ...mapGetters('user', ['user', 'isSignedIn']),
   },
   methods: {
-    startSignIn() {
-      signIn()
-    },
+    ...mapActions('user', ['signIn', 'signOut']),
   },
 }
 </script>

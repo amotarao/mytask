@@ -108,7 +108,10 @@ export default {
       return `(${hour}h${min}m)`
     },
     separatedDescription() {
-      return this.description.split('\n')
+      const d = this.description
+      if (!d) return d
+
+      return d.split('\n')
     },
   },
   methods: {

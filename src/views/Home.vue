@@ -8,34 +8,15 @@
           <task-list title="Future" :tasks="featureTasks" />
         </v-flex>
       </v-layout>
-      <v-btn
-        fixed
-        dark
-        fab
-        bottom
-        right
-        slot="activator"
-        color="green"
-        @click="dialog = true"
-      >
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-dialog v-model="dialog" lasy persistent max-width="800">
-        <task-edit
-          mode="new"
-          :saveLoading="saveLoading"
-          @close="dialog = false"
-          @save="saveNewTask($event)"
-        />
-      </v-dialog>
     </v-container>
+    <new-task :disabled="!isSignedIn" />
   </div>
 </template>
 
 <script>
 import TaskList from '@/components/organisms/TaskList.vue'
-import TaskEdit from '@/components/organisms/TaskEdit.vue'
 import Toolbar from '@/components/organisms/Toolbar.vue'
+import NewTask from '@/components/organisms/NewTask.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -43,14 +24,8 @@ export default {
   name: 'home',
   components: {
     TaskList,
-    TaskEdit,
     Toolbar,
-  },
-  data() {
-    return {
-      dialog: false,
-      saveLoading: false,
-    }
+    NewTask,
   },
   computed: {
     ...mapGetters('user', ['user', 'isSignedIn']),
@@ -67,21 +42,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('tasks', [
-      'startListener',
-      'stopListener',
-      'addTask',
-      'editTask',
-      'removeTask',
-    ]),
-    async saveNewTask(task) {
-      this.saveLoading = true
-      await this.addTask({
-        task,
-      })
-      this.saveLoading = false
-      this.dialog = false
-    },
+    ...mapActions('tasks', ['startListener', 'stopListener']),
   },
 }
 </script>

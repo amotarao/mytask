@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit="$emit('save', task)">
+  <v-form @submit.prevent="$emit('save', task)">
     <v-card>
       <v-card-title>
         <span class="headline">{{ head }}</span>

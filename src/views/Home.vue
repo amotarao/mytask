@@ -1,34 +1,40 @@
 <template>
-  <v-container grid-list-sm>
-    <v-layout row wrap>
-      <v-flex xs6> <task-list title="Today" :tasks="todayTasks" /> </v-flex>
-      <v-flex xs6> <task-list title="Future" :tasks="featureTasks" /> </v-flex>
-    </v-layout>
-    <v-btn
-      fixed
-      dark
-      fab
-      bottom
-      right
-      slot="activator"
-      color="green"
-      @click="dialog = true"
-    >
-      <v-icon>add</v-icon>
-    </v-btn>
-    <v-dialog v-model="dialog" lasy persistent max-width="800">
-      <task-edit
-        mode="new"
-        @close="dialog = false"
-        @save="saveNewTask($event)"
-      />
-    </v-dialog>
-  </v-container>
+  <div>
+    <toolbar />
+    <v-container grid-list-sm>
+      <v-layout row wrap>
+        <v-flex xs6> <task-list title="Today" :tasks="todayTasks" /> </v-flex>
+        <v-flex xs6>
+          <task-list title="Future" :tasks="featureTasks" />
+        </v-flex>
+      </v-layout>
+      <v-btn
+        fixed
+        dark
+        fab
+        bottom
+        right
+        slot="activator"
+        color="green"
+        @click="dialog = true"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+      <v-dialog v-model="dialog" lasy persistent max-width="800">
+        <task-edit
+          mode="new"
+          @close="dialog = false"
+          @save="saveNewTask($event)"
+        />
+      </v-dialog>
+    </v-container>
+  </div>
 </template>
 
 <script>
 import TaskList from '@/components/organisms/TaskList.vue'
 import TaskEdit from '@/components/organisms/TaskEdit.vue'
+import Toolbar from '@/components/organisms/Toolbar.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -37,6 +43,7 @@ export default {
   components: {
     TaskList,
     TaskEdit,
+    Toolbar,
   },
   data() {
     return {

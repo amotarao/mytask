@@ -20,7 +20,7 @@
       <task-edit
         mode="new"
         @close="dialog = false"
-        @save="addTask({ task: $event })"
+        @save="saveNewTask($event)"
       />
     </v-dialog>
   </v-container>
@@ -48,6 +48,12 @@ export default {
   },
   methods: {
     ...mapActions('tasks', ['addTask', 'editTask', 'removeTask']),
+    saveNewTask(task) {
+      this.addTask({
+        task,
+      })
+      this.dialog = false
+    },
   },
 }
 </script>

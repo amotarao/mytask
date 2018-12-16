@@ -23,6 +23,7 @@
       <v-dialog v-model="dialog" lasy persistent max-width="800">
         <task-edit
           mode="new"
+          :saveLoading="saveLoading"
           @close="dialog = false"
           @save="saveNewTask($event)"
         />
@@ -48,6 +49,7 @@ export default {
   data() {
     return {
       dialog: false,
+      saveLoading: false,
     }
   },
   computed: {
@@ -72,10 +74,12 @@ export default {
       'editTask',
       'removeTask',
     ]),
-    saveNewTask(task) {
-      this.addTask({
+    async saveNewTask(task) {
+      this.saveLoading = true
+      await this.addTask({
         task,
       })
+      this.saveLoading = false
       this.dialog = false
     },
   },

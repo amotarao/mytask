@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="$emit('save', task)">
+  <v-form @submit.prevent="save">
     <v-card>
       <v-card-title>
         <span class="headline">{{ head }}</span>
@@ -48,7 +48,12 @@
         <v-btn color="green darken-1" flat @click="setNow">Now</v-btn>
         <v-spacer />
         <v-btn color="green darken-1" flat @click="cancel">Cancel</v-btn>
-        <v-btn color="green darken-1" flat @click="$emit('save', task)"
+        <v-btn
+          color="green darken-1"
+          flat
+          :disable="saveLoading"
+          :loading="saveLoading"
+          @click="save"
           >Save</v-btn
         >
       </v-card-actions>
@@ -75,6 +80,10 @@ export default {
           ['new', 'edit'].findIndex(mode => mode === val.toLowerCase()) >= 0
         )
       },
+    },
+    saveLoading: {
+      type: Boolean,
+      default: false,
     },
     title: {
       type: String,
@@ -190,6 +199,9 @@ export default {
     },
     cancel() {
       this.$emit('close')
+    },
+    save() {
+      this.$emit('save', this.task)
     },
   },
   mounted() {

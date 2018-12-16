@@ -17,6 +17,7 @@
       <task-edit
         mode="edit"
         v-bind="task"
+        :saveLoading="saveLoading"
         @close="editDialog = false"
         @save="saveTask($event)"
       />
@@ -39,6 +40,7 @@ export default {
   data() {
     return {
       editDialog: false,
+      saveLoading: false,
     }
   },
   props: {
@@ -111,11 +113,13 @@ export default {
   },
   methods: {
     ...mapActions('tasks', ['editTask', 'removeTask']),
-    saveTask(task) {
-      this.editTask({
+    async saveTask(task) {
+      this.saveLoading = true
+      await this.editTask({
         id: this.id,
         task,
       })
+      this.saveLoading = false
       this.editDialog = false
     },
   },

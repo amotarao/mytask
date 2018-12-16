@@ -1,28 +1,18 @@
 <template>
   <div>
-    <v-hover>
-      <v-card
-        slot-scope="{ hover }"
-        :class="`elevation-${hover ? 3 : 1}`"
-        color="primary"
-        @click="editDialog = true"
-      >
-        <v-card-title>
-          <div>
-            <span v-if="startTime !== null" class="time">{{ timeText }}</span>
-            <span v-if="duration" class="grey--text">{{ durationText }}</span>
-            <p class="headline">{{ title }}</p>
-            <template v-for="(line, i) in separatedDescription">
-              <span v-if="line" :key="`${i}-text`">{{ line }}</span>
-              <br
-                v-if="i !== separatedDescription.length - 1"
-                :key="`${i}-br`"
-              />
-            </template>
-          </div>
-        </v-card-title>
-      </v-card>
-    </v-hover>
+    <v-card color="primary" hover @click="editDialog = true">
+      <v-card-title>
+        <div>
+          <span v-if="startTime !== null" class="time">{{ timeText }}</span>
+          <span v-if="duration" class="grey--text">{{ durationText }}</span>
+          <p class="headline">{{ title }}</p>
+          <template v-for="(line, i) in separatedDescription">
+            <span v-if="line" :key="`${i}-text`">{{ line }}</span>
+            <br v-if="i !== separatedDescription.length - 1" :key="`${i}-br`" />
+          </template>
+        </div>
+      </v-card-title>
+    </v-card>
     <v-dialog v-model="editDialog" lazy persistent max-width="800">
       <transition>
         <task-edit

@@ -18,7 +18,7 @@
         mode="edit"
         v-bind="task"
         @close="editDialog = false"
-        @save="editTask($event, id)"
+        @save="saveTask($event)"
       />
     </v-dialog>
   </div>
@@ -111,6 +111,13 @@ export default {
   },
   methods: {
     ...mapActions('tasks', ['editTask', 'removeTask']),
+    saveTask(task) {
+      this.editTask({
+        id: this.id,
+        task,
+      })
+      this.editDialog = false
+    },
   },
 }
 </script>

@@ -106,7 +106,7 @@ export default {
       return `(${hour}h${min}m)`
     },
     separatedDescription() {
-      return this.description.split('\\n')
+      return this.description.split('\n')
     },
   },
   methods: {

@@ -4,10 +4,19 @@
       <v-flex xs6> <task-list title="Today" :tasks="todayTasks" /> </v-flex>
       <v-flex xs6> <task-list title="Future" :tasks="featureTasks" /> </v-flex>
     </v-layout>
-    <v-dialog v-model="dialog" persistent max-width="800">
-      <v-btn fixed dark fab bottom right slot="activator" color="green">
-        <v-icon>add</v-icon>
-      </v-btn>
+    <v-btn
+      fixed
+      dark
+      fab
+      bottom
+      right
+      slot="activator"
+      color="green"
+      @click="dialog = true"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
+    <v-dialog v-model="dialog" lasy persistent max-width="800">
       <task-edit mode="new" @close="dialog = false" @save="addTask($event)" />
     </v-dialog>
   </v-container>

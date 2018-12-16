@@ -51,19 +51,20 @@ export default {
   },
   computed: {
     timeText() {
-      const d = this.startDate
-      if (d === null) return ''
+      const sd = this.startDate
+      const st = this.startTime
+      const d = this.duration
 
-      const time = new Date(d.getTime())
+      const time = sd !== null ? new Date(sd.getTime()) : new Date()
       time.setHours(0)
-      time.setMinutes(this.startTime)
-      const s = getFormatedTime(time)
-      if (!this.duration) return s
+      time.setMinutes(st)
+      const start = getFormatedTime(time)
+      if (!this.duration) return start
 
       time.setHours(0)
-      time.setMinutes(this.startTime + this.duration)
-      const e = getFormatedTime(time)
-      return `${s} - ${e}`
+      time.setMinutes(st + d)
+      const end = getFormatedTime(time)
+      return `${start} - ${end}`
     },
     durationText() {
       const d = this.duration

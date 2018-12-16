@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/firestore'
 
 import store from '@/store'
 
@@ -13,7 +14,12 @@ const config = {
 }
 firebase.initializeApp(config)
 
+const firestore = firebase.firestore()
+firestore.settings({ timestampsInSnapshots: true })
+
 export default firebase
+
+export { firestore }
 
 firebase.auth().onAuthStateChanged(user => {
   user = user || {}

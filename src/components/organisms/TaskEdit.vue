@@ -47,7 +47,7 @@
       <v-card-actions>
         <v-btn color="green darken-1" flat @click="setNow">Now</v-btn>
         <v-spacer />
-        <v-btn color="green darken-1" flat @click="cansel">Cancel</v-btn>
+        <v-btn color="green darken-1" flat @click="cancel">Cancel</v-btn>
         <v-btn color="green darken-1" flat @click="$emit('save', task)"
           >Save</v-btn
         >
@@ -188,7 +188,7 @@ export default {
       this.tmp.startDate = now
       this.tmp.startTime = now.getHours() * 60 + now.getMinutes()
     },
-    cansel() {
+    cancel() {
       this.$emit('close')
     },
   },

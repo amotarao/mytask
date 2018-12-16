@@ -1,31 +1,63 @@
 <template>
-  <v-hover>
-    <v-card
-      slot-scope="{ hover }"
-      :class="`elevation-${hover ? 3 : 1}`"
-      color="primary"
-    >
-      <v-card-title>
-        <div>
-          <span v-if="startTime !== null" class="time">{{ timeText }}</span>
-          <span v-if="duration" class="grey--text">{{ durationText }}</span>
-          <p class="headline">{{ title }}</p>
-          <template v-for="(line, i) in separatedDescription">
-            <span v-if="line" :key="`${i}-text`">{{ line }}</span>
-            <br v-if="i !== separatedDescription.length - 1" :key="`${i}-br`" />
-          </template>
-        </div>
-      </v-card-title>
-    </v-card>
-  </v-hover>
+  <div>
+    <v-hover>
+      <v-card
+        slot-scope="{ hover }"
+        :class="`elevation-${hover ? 3 : 1}`"
+        color="primary"
+        @click="editDialog = true"
+      >
+        <v-card-title>
+          <div>
+            <span v-if="startTime !== null" class="time">{{ timeText }}</span>
+            <span v-if="duration" class="grey--text">{{ durationText }}</span>
+            <p class="headline">{{ title }}</p>
+            <template v-for="(line, i) in separatedDescription">
+              <span v-if="line" :key="`${i}-text`">{{ line }}</span>
+              <br
+                v-if="i !== separatedDescription.length - 1"
+                :key="`${i}-br`"
+              />
+            </template>
+          </div>
+        </v-card-title>
+      </v-card>
+    </v-hover>
+    <v-dialog v-model="editDialog" lazy persistent max-width="800">
+      <transition>
+        <task-edit
+          mode="edit"
+          v-bind="task"
+          @close="editDialog = false"
+          @save="editTask($event, id)"
+        />
+      </transition>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
+import TaskEdit from '@/components/organisms/TaskEdit.vue'
+
+import { mapActions } from 'vuex'
+
 import { getFormatedTime } from '@/utils/datetime'
 
 export default {
   name: 'task-card',
+  components: {
+    TaskEdit,
+  },
+  data() {
+    return {
+      editDialog: false,
+    }
+  },
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       default: '(No Title)',
@@ -50,6 +82,16 @@ export default {
     },
   },
   computed: {
+    task() {
+      const { title, description, startDate, startTime, duration } = this
+      return {
+        title,
+        description,
+        startDate,
+        startTime,
+        duration,
+      }
+    },
     timeText() {
       const sd = this.startDate
       const st = this.startTime
@@ -78,6 +120,9 @@ export default {
     separatedDescription() {
       return this.description.split('\\n')
     },
+  },
+  methods: {
+    ...mapActions('tasks', ['editTask', 'removeTask']),
   },
 }
 </script>

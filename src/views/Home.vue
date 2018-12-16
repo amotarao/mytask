@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     user() {
-      if (!this.user) {
+      if (!this.user || !this.isSignedIn) {
         this.stopListener()
         return
       }

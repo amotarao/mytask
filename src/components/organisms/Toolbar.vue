@@ -8,7 +8,7 @@
       <v-btn @click="signIn" outline color="white">Sign up</v-btn>
     </template>
     <template v-else>
-      <v-menu offset-y right>
+      <v-menu lazy offset-y right>
         <v-avatar slot="activator" size="36px">
           <img :src="user.photoURL" alt="Avatar" />
         </v-avatar>

@@ -70,9 +70,9 @@ const store = {
       const today = new Date()
       const now = getFormatedDate(today)
 
-      return state.tasks.filter(task => {
-        return getFormatedDate(task.startDate) === now
-      })
+      return state.tasks
+        .filter(task => getFormatedDate(task.startDate) === now)
+        .sort((a, b) => a.startTime - b.startTime)
     },
     featureTasks: state => {
       const today = new Date()

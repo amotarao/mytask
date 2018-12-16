@@ -51,10 +51,27 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('user', ['user', 'isSignedIn']),
     ...mapGetters('tasks', ['allTasks', 'todayTasks', 'featureTasks']),
   },
+  watch: {
+    user() {
+      if (!this.user) {
+        this.stopListener()
+        return
+      }
+      const { uid } = this.user
+      this.startListener({ uid })
+    },
+  },
   methods: {
-    ...mapActions('tasks', ['addTask', 'editTask', 'removeTask']),
+    ...mapActions('tasks', [
+      'startListener',
+      'stopListener',
+      'addTask',
+      'editTask',
+      'removeTask',
+    ]),
     saveNewTask(task) {
       this.addTask({
         task,

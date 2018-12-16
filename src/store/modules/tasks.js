@@ -1,65 +1,109 @@
 import Vue from 'vue'
 
-const initialState = {
-  tasks: [],
-}
-
-const generateID = () => {
-  return Math.random()
-    .toString(36)
-    .slice(-8)
-}
-
+import { firestore } from '@/plugins/firebase'
 import { getFormatedDate } from '@/utils/datetime'
+
+const ref = firestore.collection('tasks')
 
 const store = {
   namespaced: true,
-  state: initialState,
+  state: {
+    unsubscribe: null,
+    uid: null,
+    tasks: [],
+  },
   mutations: {
-    postTask(state, { task }) {
-      let id
-      while (!id || state.tasks.findIndex(task => task.id === id) >= 0) {
-        id = generateID()
+    addTask(state, { task }) {
+      state.tasks.push(task)
+    },
+    modifiyTask(state, { id, task }) {
+      const index = state.tasks.findIndex(task => task.id === id)
+
+      // @see https://forum.vuejs.org/t/vuex-2-getters-not-updating/8609
+      Vue.set(state.tasks, index, task)
+    },
+    removeTask(state, { id }) {
+      const index = state.tasks.findIndex(task => task.id === id)
+      state.tasks = state.tasks.filter(task => task.id !== index)
+    },
+  },
+  actions: {
+    startListener({ state, commit }, { uid }) {
+      state.uid = uid
+
+      if (!uid || state.unsubscribe) {
+        state.tasks = []
+        state.unsubscribe()
+        state.unsubscribe = null
       }
 
-      state.tasks.push({
+      if (!uid) return
+
+      state.unsubscribe = ref.where('author', '==', uid).onSnapshot(
+        querySnapshot => {
+          querySnapshot.docChanges().forEach(change => {
+            const { id } = change.doc
+            const {
+              title,
+              description,
+              startDate,
+              startTime,
+              duration,
+            } = change.doc.data()
+
+            const task = {
+              id,
+              title,
+              description,
+              startDate: startDate && startDate.toDate(),
+              startTime,
+              duration,
+            }
+
+            switch (change.type) {
+              case 'added':
+                commit('addTask', { task })
+                break
+              case 'modified':
+                commit('modifiyTask', { id, task })
+                break
+              case 'removed':
+                commit('removeTask', { id })
+                break
+            }
+          })
+        },
+        error => {
+          console.error(error)
+        }
+      )
+    },
+    stopListener({ state }) {
+      state.tasks = []
+      state.uid = null
+
+      if (state.unsubscribe) {
+        state.unsubscribe()
+        state.unsubscribe = null
+      }
+    },
+    async addTask({ state }, { task }) {
+      await ref.add({
         ...task,
-        id,
+        author: state.uid,
         createAt: new Date(),
         updateAt: new Date(),
       })
     },
-    putTask(state, { id, task }) {
-      const index = state.tasks.findIndex(task => task.id === id)
-      const oldTask = state.tasks[index]
-
-      // @see https://forum.vuejs.org/t/vuex-2-getters-not-updating/8609
-      Vue.set(state.tasks, index, {
-        ...oldTask,
+    async editTask({ state }, { id, task }) {
+      await ref.doc(id).update({
         ...task,
+        author: state.uid,
         updateAt: new Date(),
       })
     },
-    deleteTask(state, { id }) {
-      const index = state.tasks.findIndex(task => task.id === id)
-      state.tasks = state.tasks.filter(task => task.id !== index)
-    },
-    deleteAllTasks(state) {
-      state.tasks = []
-    },
-  },
-  actions: {
-    addTask({ commit }, { task }) {
-      commit('postTask', { task })
-    },
-    editTask({ commit }, { id, task }) {
-      commit('putTask', { id, task })
-    },
-    removeTask({ commit }, { id }) {
-      commit('deleteTask', { id })
-    },
-    removeAllTasks({ commit }) {
-      commit('deleteAllTasks')
+    async removeTask(context, { id }) {
+      await ref.doc(id).delete()
     },
   },
   getters: {

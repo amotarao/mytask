@@ -14,14 +14,12 @@
       </v-card-title>
     </v-card>
     <v-dialog v-model="editDialog" lazy persistent max-width="800">
-      <transition>
-        <task-edit
-          mode="edit"
-          v-bind="task"
-          @close="editDialog = false"
-          @save="editTask($event, id)"
-        />
-      </transition>
+      <task-edit
+        mode="edit"
+        v-bind="task"
+        @close="editDialog = false"
+        @save="editTask($event, id)"
+      />
     </v-dialog>
   </div>
 </template>

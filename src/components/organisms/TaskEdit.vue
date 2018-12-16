@@ -15,7 +15,7 @@
                 clearable
               />
               <v-layout wrap>
-                <v-flex xs4>
+                <v-flex xs12 sm4>
                   <v-text-field
                     v-model="computedStartDate"
                     label="Start Date"
@@ -23,7 +23,7 @@
                     clearable
                   />
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs6 sm4>
                   <v-text-field
                     v-model="computedStartTime"
                     label="Start Time"
@@ -31,7 +31,7 @@
                     clearable
                   />
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs6 sm4>
                   <v-text-field
                     v-model="computedDuration"
                     label="Duration"

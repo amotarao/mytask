@@ -1,4 +1,7 @@
-import firebase from 'firebase'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+
+import store from '@/store'
 
 const config = {
   apiKey: 'AIzaSyAo1A4AEhdAjoy1ehtntwfF9J1U_WmWTV4',
@@ -11,3 +14,19 @@ const config = {
 firebase.initializeApp(config)
 
 export default firebase
+
+const provider = new firebase.auth.GoogleAuthProvider()
+
+export const signIn = () => {
+  firebase.auth().signInWithPopup(provider)
+}
+
+export const signOut = () => {
+  firebase.auth().signOut()
+}
+
+firebase.auth().onAuthStateChanged(user => {
+  user = user || {}
+  store.commit('user/onAuthStateChanged', { user })
+  store.commit('user/onUserStatusChanged', { status: Boolean(user.uid) })
+})

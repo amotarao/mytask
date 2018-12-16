@@ -46,7 +46,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn color="green darken-1" flat @click="setNow">Now</v-btn>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn color="green darken-1" flat @click="cansel">Cancel</v-btn>
         <v-btn type="submit" color="green darken-1" flat>Save</v-btn>
       </v-card-actions>

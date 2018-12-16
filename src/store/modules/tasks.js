@@ -88,22 +88,34 @@ const store = {
       }
     },
     async addTask({ state }, { task }) {
-      await ref.add({
-        ...task,
-        author: state.uid,
-        createAt: new Date(),
-        updateAt: new Date(),
-      })
+      try {
+        await ref.add({
+          ...task,
+          author: state.uid,
+          createAt: new Date(),
+          updateAt: new Date(),
+        })
+      } catch (err) {
+        console.error(err)
+      }
     },
     async editTask({ state }, { id, task }) {
-      await ref.doc(id).update({
-        ...task,
-        author: state.uid,
-        updateAt: new Date(),
-      })
+      try {
+        await ref.doc(id).update({
+          ...task,
+          author: state.uid,
+          updateAt: new Date(),
+        })
+      } catch (err) {
+        console.error(err)
+      }
     },
     async removeTask(context, { id }) {
-      await ref.doc(id).delete()
+      try {
+        await ref.doc(id).delete()
+      } catch (err) {
+        console.error(err)
+      }
     },
   },
   getters: {

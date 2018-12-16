@@ -1,3 +1,7 @@
+import firebase from '@/plugins/firebase'
+
+const provider = new firebase.auth.GoogleAuthProvider()
+
 const store = {
   namespaced: true,
   state: {
@@ -6,15 +10,20 @@ const store = {
   },
   mutations: {
     onAuthStateChanged(state, { user }) {
-      console.log(user)
       state.user = user
     },
     onUserStatusChanged(state, { status }) {
-      console.log(status)
       state.status = status
     },
   },
-  actions: {},
+  actions: {
+    signIn: () => {
+      firebase.auth().signInWithPopup(provider)
+    },
+    signOut: () => {
+      firebase.auth().signOut()
+    },
+  },
   getters: {
     user(state) {
       return state.user

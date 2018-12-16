@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const initialState = {
   tasks: [],
 }
@@ -14,7 +16,7 @@ const store = {
   namespaced: true,
   state: initialState,
   mutations: {
-    postTask(state, task) {
+    postTask(state, { task }) {
       let id
       while (!id || state.tasks.findIndex(task => task.id === id) >= 0) {
         id = generateID()
@@ -27,17 +29,18 @@ const store = {
         updateAt: new Date(),
       })
     },
-    putTask(state, id, task) {
+    putTask(state, { id, task }) {
       const index = state.tasks.findIndex(task => task.id === id)
       const oldTask = state.tasks[index]
 
-      state.tasks[index] = {
+      // @see https://forum.vuejs.org/t/vuex-2-getters-not-updating/8609
+      Vue.set(state.tasks, index, {
         ...oldTask,
         ...task,
         updateAt: new Date(),
-      }
+      })
     },
-    deleteTask(state, id) {
+    deleteTask(state, { id }) {
       const index = state.tasks.findIndex(task => task.id === id)
       state.tasks = state.tasks.filter(task => task.id !== index)
     },
@@ -46,14 +49,14 @@ const store = {
     },
   },
   actions: {
-    addTask({ commit }, task) {
-      commit('postTask', task)
+    addTask({ commit }, { task }) {
+      commit('postTask', { task })
     },
-    editTask({ commit }, id, task) {
-      commit('putTask', id, task)
+    editTask({ commit }, { id, task }) {
+      commit('putTask', { id, task })
     },
-    removeTask({ commit }, id) {
-      commit('deleteTask', id)
+    removeTask({ commit }, { id }) {
+      commit('deleteTask', { id })
     },
     removeAllTasks({ commit }) {
       commit('deleteAllTasks')

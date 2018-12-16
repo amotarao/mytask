@@ -17,7 +17,11 @@
       <v-icon>add</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" lasy persistent max-width="800">
-      <task-edit mode="new" @close="dialog = false" @save="addTask($event)" />
+      <task-edit
+        mode="new"
+        @close="dialog = false"
+        @save="addTask({ task: $event })"
+      />
     </v-dialog>
   </v-container>
 </template>

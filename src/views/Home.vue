@@ -8,7 +8,7 @@
       <v-btn fixed dark fab bottom right slot="activator" color="green">
         <v-icon>add</v-icon>
       </v-btn>
-      <task-edit @close="dialog = false" @save="addTask($event)" />
+      <task-edit mode="new" @close="dialog = false" @save="addTask($event)" />
     </v-dialog>
   </v-container>
 </template>
